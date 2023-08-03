@@ -17,12 +17,22 @@ class Program
 
         Console.Write("Enter product category (Smartphone/Computer/TV): ");
         ProductCategory productCategory = Enum.Parse<ProductCategory>(Console.ReadLine(), true);
+        if (!Enum.IsDefined(typeof(ProductCategory), productCategory))
+        {
+            Console.WriteLine("Invalid product category.");
+            return;
+        }
 
         Console.Write("Enter product amount: ");
         decimal amount = decimal.Parse(Console.ReadLine());
 
         Console.Write("Enter installment months (3/6/9/12/18/24): ");
         int installmentMonths = int.Parse(Console.ReadLine());
+        if (amount <= 0 || installmentMonths <= 0)
+        {
+            Console.WriteLine("Amount and installment months must be greater than 0.");
+            return;
+        }
 
         Console.Write("Enter customer phone number: ");
         string phoneNumber = Console.ReadLine();
