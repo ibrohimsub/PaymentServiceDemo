@@ -16,55 +16,62 @@ class Program
 {
     static void Main(string[] args)
     {
-        ISmsService smsService = new SmsService();
-        PaymentService paymentService = new PaymentService(smsService);
-
-        Console.Write("Enter product category (Smartphone/Computer/TV): ");
-        if (!Enum.TryParse<ProductCategory>(Console.ReadLine(), true, out ProductCategory productCategory))
+        try
         {
-            Console.WriteLine("Invalid product category.");
-            return;
+            ISmsService smsService = new SmsService();
+            PaymentService paymentService = new PaymentService(smsService);
+
+            Console.Write("Enter product category (Smartphone/Computer/TV): ");
+            if (!Enum.TryParse<ProductCategory>(Console.ReadLine(), true, out ProductCategory productCategory))
+            {
+                Console.WriteLine("Invalid product category.");
+                return;
+            }
+
+            Console.Write("Enter product amount: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal amount) || amount <= 0)
+            {
+                Console.WriteLine("Amount must be a positive number.");
+                return;
+            }
+
+            decimal totalAmount = paymentService.CalculateTotalAmount(productCategory, amount);
+
+            Console.Write("Enter installment months (3/6/9/12/18/24): ");
+            if (!int.TryParse(Console.ReadLine(), out int installmentMonths) || !IsValidInstallment(productCategory, installmentMonths))
+            {
+                Console.WriteLine("Invalid installment months.");
+                return;
+            }
+
+            Console.Write("Enter customer phone number: ");
+            string phoneNumber = Console.ReadLine();
+
+            Logger logger = new Logger();
+            logger.LogTransaction($"Payment completed for {productCategory} - Total Amount: {totalAmount}");
+
+            PaymentRepository paymentRepository = new PaymentRepository();
+            List<CustomerPayment> payments = paymentRepository.LoadPaymentsFromDatabase();
+            payments.Add(new CustomerPayment
+            {
+                ProductCategory = productCategory,
+                Amount = amount,
+                InstallmentMonths = installmentMonths,
+                TotalAmount = totalAmount,
+                PhoneNumber = phoneNumber,
+                PaymentDate = DateTime.Now
+            });
+            paymentRepository.SavePaymentsToDatabase(payments);
+
+            string smsMessage = $"Thank you for your purchase!\nProduct: {productCategory}, Total Amount: {totalAmount} somonies";
+            smsService.SendSms(phoneNumber, smsMessage);
+
+            Console.WriteLine("Payment completed successfully.");
         }
-
-        Console.Write("Enter product amount: ");
-        if (!decimal.TryParse(Console.ReadLine(), out decimal amount) || amount <= 0)
+        catch (Exception ex)
         {
-            Console.WriteLine("Amount must be a positive number.");
-            return;
+            Console.WriteLine("An error occurred while processing the payment: " + ex.Message);
         }
-
-        decimal totalAmount = paymentService.CalculateTotalAmount(productCategory, amount);
-
-        Console.Write("Enter installment months (3/6/9/12/18/24): ");
-        if (!int.TryParse(Console.ReadLine(), out int installmentMonths) || !IsValidInstallment(productCategory, installmentMonths))
-        {
-            Console.WriteLine("Invalid installment months.");
-            return;
-        }
-
-        Console.Write("Enter customer phone number: ");
-        string phoneNumber = Console.ReadLine();
-
-        Logger logger = new Logger();
-        logger.LogTransaction($"Payment completed for {productCategory} - Total Amount: {totalAmount}");
-
-        PaymentRepository paymentRepository = new PaymentRepository();
-        List<CustomerPayment> payments = paymentRepository.LoadPaymentsFromDatabase();
-        payments.Add(new CustomerPayment
-        {
-            ProductCategory = productCategory,
-            Amount = amount,
-            InstallmentMonths = installmentMonths,
-            TotalAmount = totalAmount,
-            PhoneNumber = phoneNumber,
-            PaymentDate = DateTime.Now
-        });
-        paymentRepository.SavePaymentsToDatabase(payments);
-
-        string smsMessage = $"Thank you for your purchase!\nProduct: {productCategory}, Total Amount: {totalAmount} somonies";
-        smsService.SendSms(phoneNumber, smsMessage);
-
-        Console.WriteLine("Payment completed successfully.");
 
         Console.ReadLine();
     }

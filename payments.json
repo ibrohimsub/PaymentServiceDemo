@@ -1,1 +1,18 @@
-﻿
+[
+  {
+    "ProductCategory": 18,
+    "Amount": 1234,
+    "InstallmentMonths": 12,
+    "TotalAmount": 1295.70,
+    "PhoneNumber": "123",
+    "PaymentDate": "2023-08-03T22:04:40.361529+05:00"
+  },
+  {
+    "ProductCategory": 18,
+    "Amount": 3245,
+    "InstallmentMonths": 12,
+    "TotalAmount": 3407.25,
+    "PhoneNumber": "12345",
+    "PaymentDate": "2023-08-03T22:08:00.741654+05:00"
+  }
+]

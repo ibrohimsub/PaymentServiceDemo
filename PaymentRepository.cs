@@ -4,7 +4,7 @@ namespace PaymentServiceDemo
 {
     public class PaymentRepository
     {
-        private const string PaymentFilePath = "payments.json";
+        private const string PaymentFilePath = "/Users/ibragim/Desktop/PaymentServiceDemo/payments.json";
 
         public List<CustomerPayment> LoadPaymentsFromDatabase()
         {
@@ -36,7 +36,7 @@ namespace PaymentServiceDemo
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error saving payments to database: " + ex.Message);
+                Console.WriteLine("Error saving payments to database: " + ex.ToString());
             }
         }
 
