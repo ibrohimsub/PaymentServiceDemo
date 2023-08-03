@@ -9,6 +9,7 @@ public enum ProductCategory
     TV
 }
 
+
 class Program
 {
     static void Main(string[] args)
@@ -17,21 +18,23 @@ class Program
         PaymentService paymentService = new PaymentService(smsService);
 
         Console.Write("Enter product category (Smartphone/Computer/TV): ");
-        ProductCategory productCategory = Enum.Parse<ProductCategory>(Console.ReadLine(), true);
-        if (!Enum.IsDefined(typeof(ProductCategory), productCategory))
+        if (!Enum.TryParse<ProductCategory>(Console.ReadLine(), true, out ProductCategory productCategory))
         {
             Console.WriteLine("Invalid product category.");
             return;
         }
 
         Console.Write("Enter product amount: ");
-        decimal amount = decimal.Parse(Console.ReadLine());
+        if (!decimal.TryParse(Console.ReadLine(), out decimal amount) || amount <= 0)
+        {
+            Console.WriteLine("Amount must be a positive number.");
+            return;
+        }
 
         Console.Write("Enter installment months (3/6/9/12/18/24): ");
-        int installmentMonths = int.Parse(Console.ReadLine());
-        if (amount <= 0 || installmentMonths <= 0)
+        if (!int.TryParse(Console.ReadLine(), out int installmentMonths) || !IsValidInstallment(installmentMonths))
         {
-            Console.WriteLine("Amount and installment months must be greater than 0.");
+            Console.WriteLine("Invalid installment months.");
             return;
         }
 
@@ -60,5 +63,10 @@ class Program
         smsService.SendSms(phoneNumber, smsMessage);
 
         Console.WriteLine("Payment completed successfully.");
+    }
+
+    static bool IsValidInstallment(int months)
+    {
+        return months == 3 || months == 6 || months == 9 || months == 12 || months == 18 || months == 24;
     }
 }
