@@ -1,6 +1,6 @@
 [
   {
-    "ProductCategory": 18,
+    "ProductCategory": "TV",
     "Amount": 1234,
     "InstallmentMonths": 12,
     "TotalAmount": 1295.70,
@@ -8,11 +8,19 @@
     "PaymentDate": "2023-08-03T22:04:40.361529+05:00"
   },
   {
-    "ProductCategory": 18,
+    "ProductCategory": "TV",
     "Amount": 3245,
     "InstallmentMonths": 12,
     "TotalAmount": 3407.25,
     "PhoneNumber": "12345",
     "PaymentDate": "2023-08-03T22:08:00.741654+05:00"
+  },
+  {
+    "ProductCategory": "TV",
+    "Amount": 123,
+    "InstallmentMonths": 12,
+    "TotalAmount": 129.15,
+    "PhoneNumber": "1234",
+    "PaymentDate": "2023-08-03T23:02:45.33595+05:00"
   }
 ]
