@@ -1,7 +1,37 @@
-﻿
+﻿using System;
+using PaymentServiceDemo;
+
 public enum ProductCategory
 {
     Smartphone,
     Computer,
     TV
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        PaymentService paymentService = new PaymentService();
+        ISmsService smsService = new SmsService();
+
+        Console.Write("Enter product category (Smartphone/Computer/TV): ");
+        ProductCategory productCategory = Enum.Parse<ProductCategory>(Console.ReadLine(), true);
+
+        Console.Write("Enter product amount: ");
+        decimal amount = decimal.Parse(Console.ReadLine());
+
+        Console.Write("Enter installment months (3/6/9/12/18/24): ");
+        int installmentMonths = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter customer phone number: ");
+        string phoneNumber = Console.ReadLine();
+
+        decimal totalAmount = paymentService.CalculateTotalAmount(productCategory, amount, installmentMonths);
+
+        string smsMessage = $"Thank you for your purchase!\nProduct: {productCategory}, Total Amount: {totalAmount} somonies";
+        smsService.SendSms(phoneNumber, smsMessage);
+
+        Console.WriteLine("Payment completed successfully.");
+    }
 }
