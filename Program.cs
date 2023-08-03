@@ -39,6 +39,9 @@ class Program
 
         decimal totalAmount = paymentService.CalculateTotalAmount(productCategory, amount, installmentMonths);
 
+        Logger logger = new Logger();
+        logger.LogTransaction($"Payment completed for {productCategory} - Total Amount: {totalAmount}");
+
         string smsMessage = $"Thank you for your purchase!\nProduct: {productCategory}, Total Amount: {totalAmount} somonies";
         smsService.SendSms(phoneNumber, smsMessage);
 
