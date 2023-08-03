@@ -1,5 +1,4 @@
-﻿using System;
-namespace PaymentServiceDemo
+﻿namespace PaymentServiceDemo
 {
     public interface ISmsService
     {

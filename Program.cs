@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PaymentServiceDemo;
 
 public enum ProductCategory
@@ -41,6 +42,19 @@ class Program
 
         Logger logger = new Logger();
         logger.LogTransaction($"Payment completed for {productCategory} - Total Amount: {totalAmount}");
+
+        PaymentRepository paymentRepository = new PaymentRepository();
+        List<CustomerPayment> payments = paymentRepository.LoadPaymentsFromDatabase();
+        payments.Add(new CustomerPayment
+        {
+            ProductCategory = productCategory,
+            Amount = amount,
+            InstallmentMonths = installmentMonths,
+            TotalAmount = totalAmount,
+            PhoneNumber = phoneNumber,
+            PaymentDate = DateTime.Now
+        });
+        paymentRepository.SavePaymentsToDatabase(payments);
 
         string smsMessage = $"Thank you for your purchase!\nProduct: {productCategory}, Total Amount: {totalAmount} somonies";
         smsService.SendSms(phoneNumber, smsMessage);
