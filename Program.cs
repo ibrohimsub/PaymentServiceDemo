@@ -12,8 +12,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        PaymentService paymentService = new PaymentService();
         ISmsService smsService = new SmsService();
+        PaymentService paymentService = new PaymentService(smsService);
 
         Console.Write("Enter product category (Smartphone/Computer/TV): ");
         ProductCategory productCategory = Enum.Parse<ProductCategory>(Console.ReadLine(), true);

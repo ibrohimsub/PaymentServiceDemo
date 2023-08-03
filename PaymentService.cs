@@ -3,6 +3,13 @@ namespace PaymentServiceDemo
 {
     public class PaymentService
     {
+        private readonly ISmsService _smsService;
+
+        public PaymentService(ISmsService smsService)
+        {
+            _smsService = smsService;
+        }
+
         public decimal CalculateTotalAmount(ProductCategory productCategory, decimal amount, int installmentMonths)
         {
             decimal totalAmount = amount;
