@@ -65,6 +65,8 @@ class Program
         smsService.SendSms(phoneNumber, smsMessage);
 
         Console.WriteLine("Payment completed successfully.");
+
+        Console.ReadLine();
     }
 
     static bool IsValidInstallment(ProductCategory productCategory, int months)
