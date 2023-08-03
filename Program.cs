@@ -30,8 +30,10 @@ class Program
             return;
         }
 
+        decimal totalAmount = paymentService.CalculateTotalAmount(productCategory, amount);
+
         Console.Write("Enter installment months (3/6/9/12/18/24): ");
-        if (!int.TryParse(Console.ReadLine(), out int installmentMonths) || !IsValidInstallment(installmentMonths))
+        if (!int.TryParse(Console.ReadLine(), out int installmentMonths) || !IsValidInstallment(productCategory, installmentMonths))
         {
             Console.WriteLine("Invalid installment months.");
             return;
@@ -39,8 +41,6 @@ class Program
 
         Console.Write("Enter customer phone number: ");
         string phoneNumber = Console.ReadLine();
-
-        decimal totalAmount = paymentService.CalculateTotalAmount(productCategory, amount, installmentMonths);
 
         Logger logger = new Logger();
         logger.LogTransaction($"Payment completed for {productCategory} - Total Amount: {totalAmount}");
@@ -64,8 +64,9 @@ class Program
         Console.WriteLine("Payment completed successfully.");
     }
 
-    static bool IsValidInstallment(int months)
+    static bool IsValidInstallment(ProductCategory productCategory, int months)
     {
-        return months == 3 || months == 6 || months == 9 || months == 12 || months == 18 || months == 24;
+        int maxMonths = (int)productCategory;
+        return months >= 3 && months <= maxMonths;
     }
 }
