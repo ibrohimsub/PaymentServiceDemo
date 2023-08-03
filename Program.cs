@@ -4,11 +4,10 @@ using PaymentServiceDemo;
 
 public enum ProductCategory
 {
-    Smartphone,
-    Computer,
-    TV
+    Smartphone = 9,
+    Computer = 12,
+    TV = 18
 }
-
 
 class Program
 {
