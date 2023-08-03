@@ -9,25 +9,24 @@
             _smsService = smsService;
         }
 
-        public decimal CalculateTotalAmount(ProductCategory productCategory, decimal amount, int installmentMonths)
+        public decimal CalculateTotalAmount(ProductCategory productCategory, decimal amount)
         {
             decimal totalAmount = amount;
 
             if (productCategory == ProductCategory.Smartphone)
             {
-                totalAmount += amount * (installmentMonths - 3) * 0.03m;
+                totalAmount += amount * 0.03m;
             }
             else if (productCategory == ProductCategory.Computer)
             {
-                totalAmount += amount * (installmentMonths - 3) * 0.04m;
+                totalAmount += amount * 0.04m;
             }
             else if (productCategory == ProductCategory.TV)
             {
-                totalAmount += amount * (installmentMonths - 3) * 0.05m;
+                totalAmount += amount * 0.05m;
             }
 
             return totalAmount;
         }
     }
-
 }
